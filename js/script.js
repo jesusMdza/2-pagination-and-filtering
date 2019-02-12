@@ -96,7 +96,7 @@ const appendPageLinks = (list) => {
       if (target) {
         target.classList.add('active');
       }
-      showPage(list, page);
+      showPage(list);
     });
   }
 
