@@ -15,92 +15,132 @@ FSJS project 2 - List Filter and Pagination
    will only be used inside of a function, then it can be locally
    scoped to that function.
 ***/
-const pageDiv = document.getElementsByClassName('page')[0];
-const allStudents = document.getElementsByClassName('student-item');
+document.addEventListener('DOMContentLoaded', () => {
 
-const clear = () => {
+  const pageDiv = document.getElementsByClassName('page')[0];
+  const pageHeader = document.getElementsByClassName('page-header')[0];
+  const allStudents = document.getElementsByClassName('student-item');
+  let a = document.getElementsByTagName('a');
 
-  for (let i = 0; i < allStudents.length; i++) {
-    allStudents[i].style.display = 'none';
-  }
-}
-
-const showPage = (list, page) => {
-
-  let listArray = Array.from(list);
-
-  let pageOne = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 0 && listArray.indexOf(li) <= 9) {
-      li.style.display = 'block';
+  const clear = () => {
+    for (let i = 0; i < allStudents.length; i++) {
+      allStudents[i].style.display = 'none';
     }
-  });
+  };
 
-  let pageTwo = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 10 && listArray.indexOf(li) <= 19) {
-      li.style.display = 'none';
+  const clearClass = () => {
+    for (let i = 0; i < a.length; i++) {
+      a[i].classList = '';
     }
-  });
+  };
 
-  let pageThree = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 20 && listArray.indexOf(li) <= 29) {
-      li.style.display = 'none';
+  const clearPages = () => {
+    for (let i = 0; i < a.length; i++) {
+      a[i].style.display = 'none';
     }
-  });
+  };
 
-  let pageFour = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 30 && listArray.indexOf(li) <= 39) {
-      li.style.display = 'none';
+  const showPage = (list, page) => {
+    clear();
+    let firstIndex = page * 10 - 10;
+    let lastIndex = page * 10 - 1;
+    let array = [];
+
+    for (let i = 0; i < list.length; i++) {
+      array.push(list[i]);
+      if (array.indexOf(array[i]) >= firstIndex && array.indexOf(array[i]) <= lastIndex) {
+        array[i].style.display = 'block';
+      }
     }
-  });
+  };
 
-  let pageFive = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 40 && listArray.indexOf(li) <= 49) {
-      li.style.display = 'none';
-    }
-  });
-
-  let pageSix = listArray.filter((li) => {
-    if (listArray.indexOf(li) >= 50 && listArray.indexOf(li) <= 59) {
-      li.style.display = 'none';
-    }
-  });
-
-}
-
-/***
+  /***
    Create the `appendPageLinks function` to generate, append, and add
    functionality to the pagination buttons.
 ***/
 
-const appendPageLinks = (list) => {
+  const appendPageLinks = (list) => {
+    let pageNo = 1;
+    let totalPages = Math.ceil(list.length / 10);
+    let div = document.createElement('div');
+    let ul = document.createElement('ul');
+    div.classList.add('pagination');
+    pageDiv.appendChild(div);
+    div.appendChild(ul);
 
-  let pageNo = 1;
-  let totalPages = Math.ceil(list.length / 10);
-  let div = document.createElement('div');
-  let ul = document.createElement('ul');
-  div.classList.add('pagination');
-  pageDiv.appendChild(div);
-  div.appendChild(ul);
+    for (let i = 0; i < totalPages; i++) {
+      let li = document.createElement('li');
+      let a = document.createElement('a');
+      a.style.cursor = 'pointer';
+      ul.appendChild(li);
+      li.appendChild(a);
+      a.textContent = pageNo;
+      pageNo++;
 
-  for (let i = 0; i < totalPages; i++) {
-    let li = document.createElement('li');
-    let a = document.createElement('a');
-    a.style.cursor = 'pointer';
-    ul.appendChild(li);
-    li.appendChild(a);
-    a.textContent = pageNo;
-    pageNo++;
+      a.addEventListener('click', (event) => {
+        clear();
+        clearClass();
+        const target = event.target;
+        const page = parseInt(target.textContent);
+        if (target) {
+          target.classList = 'active';
+        }
 
-    a.addEventListener('click', (event) => {
-      const target = event.target;
-      if (target) {
-        target.classList.add('active');
+        showPage(list, page);
+      });
+    }
+
+  };
+
+  const appendSearch = (list) => {
+    const searchDiv = document.createElement('div');
+    const searchButton = document.createElement('button');
+    const input = document.createElement('input');
+    const studentInfo = [];
+    const newSearch = [];
+    let studentDetails;
+    searchDiv.classList.add('student-search');
+    searchButton.textContent = 'Search';
+    searchButton.style.cursor = 'pointer';
+    input.placeholder = 'Search for students...';
+    pageHeader.appendChild(searchDiv);
+    searchDiv.appendChild(input);
+    searchDiv.appendChild(searchButton);
+
+    for (let i = 0; i < list.length; i++) {
+      studentDetails = list[i].firstElementChild;
+      studentInfo.push(studentDetails);
+    }
+
+    input.addEventListener('keyup', () => {
+      clear();
+      clearPages();
+
+      const search = input.value.toLowerCase();
+
+      for (let i = 0; i < studentInfo.length; i++) {
+        const searchList = studentInfo[i].parentNode;
+        if (studentInfo[i].textContent.includes(search)) {
+          searchList.style.display = 'block';
+          newSearch.push(searchList);
+        }
       }
-      showPage(list);
+
+      appendPageLinks(newSearch);
     });
-  }
+  };
 
-};
+  const selectFirstPage = (list) => {
+    for (let i = 0; i < a.length; i++) {
+      a[0].classList = 'active';
+    }
 
-appendPageLinks(allStudents);
+    showPage(list, 1);
+  };
+
+  appendSearch(allStudents);
+  appendPageLinks(allStudents);
+  selectFirstPage(allStudents);
+});
+
 // Remember to delete the comments that came with this file, and replace them with your own code comments
