@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
   pageDiv.appendChild(div);
   div.appendChild(ul);
 
+  const error = document.createElement('p');
+  ul.appendChild(error);
+  error.textContent = 'No Matches Found';
+  error.style.padding = '15px 0px';
+  error.style.textAlign = 'center';
+  error.style.color = '#888';
+  error.style.fontSize = '35px';
+  error.style.display = 'none';
+
   const clear = () => {
     for (let i = 0; i < allStudents.length; i++) {
       allStudents[i].style.display = 'none';
@@ -99,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchButton = document.createElement('button');
     const input = document.createElement('input');
     const studentInfo = [];
-    const newSearch = [];
+    let newSearch;
     let studentDetails;
     searchDiv.classList.add('student-search');
     searchButton.textContent = 'Search';
@@ -117,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('keyup', () => {
       clear();
       clearPages();
+      newSearch = [];
 
       const search = input.value.toLowerCase();
 
@@ -125,6 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (studentInfo[i].textContent.includes(search)) {
           searchList.style.display = 'block';
           newSearch.push(searchList);
+        }
+
+        if (newSearch.length === 0) {
+          error.style.display = 'block';
+        } else {
+          error.style.display = 'none';
         }
       }
 
