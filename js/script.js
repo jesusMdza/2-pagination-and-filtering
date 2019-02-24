@@ -19,8 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const pageDiv = document.getElementsByClassName('page')[0];
   const pageHeader = document.getElementsByClassName('page-header')[0];
-  const allStudents = document.getElementsByClassName('student-item');
+  let allStudents = document.getElementsByClassName('student-item');
   let a = document.getElementsByTagName('a');
+  let div = document.createElement('div');
+  let ul = document.createElement('ul');
+  div.classList.add('pagination');
+  pageDiv.appendChild(div);
+  div.appendChild(ul);
 
   const clear = () => {
     for (let i = 0; i < allStudents.length; i++) {
@@ -62,17 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const appendPageLinks = (list) => {
     let pageNo = 1;
     let totalPages = Math.ceil(list.length / 10);
-    let div = document.createElement('div');
-    let ul = document.createElement('ul');
-    div.classList.add('pagination');
-    pageDiv.appendChild(div);
-    div.appendChild(ul);
+    const paginationDiv = document.getElementsByClassName('pagination')[0];
+    const paginationUl = paginationDiv.firstElementChild;
 
     for (let i = 0; i < totalPages; i++) {
       let li = document.createElement('li');
       let a = document.createElement('a');
       a.style.cursor = 'pointer';
-      ul.appendChild(li);
+      paginationUl.appendChild(li);
       li.appendChild(a);
       a.textContent = pageNo;
       pageNo++;
