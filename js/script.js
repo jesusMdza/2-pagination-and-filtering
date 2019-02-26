@@ -3,20 +3,17 @@ Treehouse Techdegree:
 FSJS project 2 - List Filter and Pagination
 ******************************************/
 
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
-
-/***
-   Add your global variables that store the DOM elements you will
-   need to reference and/or manipulate.
-
-   But be mindful of which variables should be global and which
-   should be locally scoped to one of the two main functions you're
-   going to create. A good general rule of thumb is if the variable
-   will only be used inside of a function, then it can be locally
-   scoped to that function.
-***/
+//****     This project is attempting to receive an "Exceeds Expectations" grade    ****//
+//
+//
+//
+//
+//
+//
+// Javascript code runs whenever document is completely loaded
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Global variables of page. Student div and ul are appended to the page.
   const pageDiv = document.getElementsByClassName('page')[0];
   const pageHeader = document.getElementsByClassName('page-header')[0];
   let allStudents = document.getElementsByClassName('student-item');
@@ -27,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   pageDiv.appendChild(div);
   div.appendChild(ul);
 
+  // Global dynamic error message
   const error = document.createElement('p');
   ul.appendChild(error);
   error.textContent = 'No Matches Found';
@@ -36,24 +34,29 @@ document.addEventListener('DOMContentLoaded', () => {
   error.style.fontSize = '35px';
   error.style.display = 'none';
 
+  // sets display of all students to none
   const clear = () => {
     for (let i = 0; i < allStudents.length; i++) {
       allStudents[i].style.display = 'none';
     }
   };
 
+  // sets class of all a tags to an empty string
   const clearClass = () => {
     for (let i = 0; i < a.length; i++) {
       a[i].classList = '';
     }
   };
 
+  // sets all a tag's display to none
   const clearPages = () => {
     for (let i = 0; i < a.length; i++) {
       a[i].style.display = 'none';
     }
   };
 
+  /* Function passes "list" (all students) and "page" (page text content) arguments and
+   displays a specific student list */
   const showPage = (list, page) => {
     clear();
     let firstIndex = page * 10 - 10;
@@ -68,11 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  /***
-   Create the `appendPageLinks function` to generate, append, and add
-   functionality to the pagination buttons.
-***/
-
+  /* Function dynamically creates and appends li and a tags to the global ul
+  depending on the amount of students passed in the "list" argument. */
   const appendPageLinks = (list) => {
     let pageNo = 1;
     let totalPages = Math.ceil(list.length / 10);
@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       a.textContent = pageNo;
       pageNo++;
 
+      // Styles user clicked page
       a.addEventListener('click', (event) => {
         clear();
         clearClass();
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   };
 
+  // Function dynamically creates the search input field and button and appends to the page header
   const appendSearch = (list) => {
     const searchDiv = document.createElement('div');
     const searchButton = document.createElement('button');
@@ -124,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       studentInfo.push(studentDetails);
     }
 
+    // student's name and email searched for by user's input
     input.addEventListener('keyup', () => {
       clear();
       clearPages();
@@ -140,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       }
 
+      // If no students are returned, display error message
       if (newSearch.length === 0) {
         error.style.display = 'block';
       } else {
@@ -151,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Function styles and clicks first dynamic page
   const selectFirstPage = (list) => {
     for (let i = 0; i < a.length; i++) {
       if (a[i].textContent == 1) {
@@ -168,5 +173,3 @@ document.addEventListener('DOMContentLoaded', () => {
   appendPageLinks(allStudents);
   selectFirstPage(allStudents);
 });
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments
