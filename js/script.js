@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const studentInfo = [];
     let newSearch;
     let studentDetails;
+    let a = document.getElementsByTagName('a');
     searchDiv.classList.add('student-search');
     searchButton.textContent = 'Search';
     searchButton.style.cursor = 'pointer';
@@ -137,23 +138,30 @@ document.addEventListener('DOMContentLoaded', () => {
           newSearch.push(searchList);
         }
 
-        if (newSearch.length === 0) {
-          error.style.display = 'block';
-        } else {
-          error.style.display = 'none';
-        }
+      }
+
+      if (newSearch.length === 0) {
+        error.style.display = 'block';
+      } else {
+        error.style.display = 'none';
       }
 
       appendPageLinks(newSearch);
+      selectFirstPage(newSearch);
     });
   };
 
   const selectFirstPage = (list) => {
     for (let i = 0; i < a.length; i++) {
-      a[0].classList = 'active';
-    }
+      if (a[i].textContent == 1) {
+        a[i].classList = 'active';
+      }
 
-    showPage(list, 1);
+      if (a[i].style.display !== 'none') {
+        a[i].click();
+        return;
+      }
+    }
   };
 
   appendSearch(allStudents);
